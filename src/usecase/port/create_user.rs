@@ -1,7 +1,7 @@
 use anyhow::{Error, Result};
 use derive_new::new;
 
-use crate::port::{InputData, OutputData};
+use crate::usecase::port::{InputData, OutputData};
 
 pub trait CreateUserPort {
     fn handle(&self, input: CreateUserInputData) -> Result<CreateUserOutputData, Error>;

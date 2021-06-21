@@ -1,10 +1,10 @@
 use anyhow::{Error, Result};
 
-use domain::aggregate::{User, UserBuilder};
-use domain::repository::{HaveIdRepository, IdRepository};
-use domain::vo::{Id, Name};
+use crate::domain::aggregate::{User, UserBuilder};
+use crate::domain::repository::{HaveIdRepository, IdRepository};
+use crate::domain::vo::{Id, Name};
 
-use crate::port::{CreateUserInputData, CreateUserOutputData, CreateUserPort};
+use crate::usecase::port::{CreateUserInputData, CreateUserOutputData, CreateUserPort};
 
 pub trait CreateUserInterractor: HaveIdRepository {}
 
@@ -34,9 +34,8 @@ mod tests {
     fn test_handle() {
         use anyhow::{Error, Result};
 
-        use domain::repository::{HaveIdRepository, IdRepository};
-
-        use crate::port::{CreateUserPort, HaveCreateUserPort};
+        use crate::domain::repository::{HaveIdRepository, IdRepository};
+        use crate::usecase::port::{CreateUserPort, HaveCreateUserPort};
 
         const ID: &str = "01F8MECHZX3TBDSZ7XRADM79XE";
 
