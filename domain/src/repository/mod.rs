@@ -1,3 +1,3 @@
 pub mod id;
 
-pub use self::id::IdRepository;
+pub use self::id::{HaveIdRepository, IdRepository};

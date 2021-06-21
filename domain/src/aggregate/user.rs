@@ -1,14 +1,17 @@
-use crate::vo::{UserId, UserName};
 use derive_builder::Builder;
-use derive_getters::Getters;
+use getset::{Getters, Setters};
 
-#[derive(Builder, Default, Clone, Debug, Getters)]
+use crate::vo::{Id, Name};
+
+#[derive(Default, Clone, Debug, Getters, Setters, Builder)]
 #[builder(setter(into))]
 pub struct User {
     #[builder(pattern = "immutable")]
-    id: UserId,
+    #[getset(get = "pub")]
+    id: Id<User>,
 
-    name: UserName,
+    #[getset(get = "pub", set = "pub")]
+    name: Name<User>,
 }
 
 impl PartialEq for User {
@@ -20,19 +23,19 @@ impl PartialEq for User {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::vo::{UserId, UserName};
+    use crate::vo::{Id, Name};
 
     #[test]
     fn test_user() {
         assert_eq!(
             UserBuilder::default()
-                .id(UserId::new("01F8MECHZX3TBDSZ7XRADM79XE"))
-                .name(UserName::new("hoge").unwrap())
+                .id(Id::<User>::new("01F8MECHZX3TBDSZ7XRADM79XE"))
+                .name(Name::<User>::new("hoge").unwrap())
                 .build()
                 .unwrap(),
             User {
-                id: UserId::new("01F8MECHZX3TBDSZ7XRADM79XE"),
-                name: UserName::new("hoge").unwrap(),
+                id: Id::<User>::new("01F8MECHZX3TBDSZ7XRADM79XE"),
+                name: Name::<User>::new("hoge").unwrap(),
             }
         );
     }

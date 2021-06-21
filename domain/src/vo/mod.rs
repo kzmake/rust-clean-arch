@@ -1,5 +1,5 @@
-pub mod user_id;
-pub mod user_name;
+pub mod id;
+pub mod name;
 
-pub use self::user_id::UserId;
-pub use self::user_name::UserName;
+pub use self::id::Id;
+pub use self::name::Name;
