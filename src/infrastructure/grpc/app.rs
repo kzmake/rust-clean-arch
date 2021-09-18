@@ -1,5 +1,4 @@
 use anyhow::Result;
-use std::net::SocketAddr;
 use tonic::{transport::Server, Request, Response, Status};
 
 pub mod kzmake_rca_user_v1 {
@@ -15,49 +14,46 @@ use kzmake_rca_user_v1::{ListRequest, ListResponse};
 use kzmake_rca_user_v1::{RenameRequest, RenameResponse};
 
 use crate::domain::repository::HaveIdRepository;
-use crate::domain::repository::HaveUserRepository;
+use crate::domain::repository::HaveRepository;
 use crate::infrastructure::id::UlidRepository;
 use crate::infrastructure::state::MemoryUserRepository;
 use crate::usecase::interactor::CreateUserInterractor;
 use crate::usecase::port::{CreateUserInputData, CreateUserPort, HaveCreateUserPort};
 
 #[derive(Default)]
-pub struct Service {}
+pub struct App {}
 
-// Inject MemoryUserRepository
-impl MemoryUserRepository for Service {}
-impl HaveUserRepository for Service {
-    type UserRepository = Self;
-    fn provide_user_repository(&self) -> &Self::UserRepository {
+impl MemoryUserRepository for App {}
+impl HaveRepository<User> for App {
+    type Repository = Self;
+    fn provide_repository(&self) -> &Self::Repository {
         &self
     }
 }
 
-// Inject UlidRepository
-impl UlidRepository for Service {}
-impl HaveIdRepository for Service {
+impl UlidRepository for App {}
+impl HaveIdRepository for App {
     type IdRepository = Self;
     fn provide_id_repository(&self) -> &Self::IdRepository {
         &self
     }
 }
 
-// Inject CreateUserInterractor
-impl CreateUserInterractor for Service {}
-impl HaveCreateUserPort for Service {
-    type CreateUserPort = Self;
-    fn provide_create_user_port(&self) -> &Self::CreateUserPort {
+impl Interractor<CreateUser> for App {}
+impl HavePort<CreateUser> for App {
+    type Port = Self;
+    fn provide_port(&self) -> &Self::Port {
         &self
     }
 }
 
 #[tonic::async_trait]
-impl UserService for Service {
+impl UserService for App {
     async fn create(
         &self,
         request: Request<CreateRequest>,
     ) -> Result<Response<CreateResponse>, Status> {
-        println!("Got a request: {:?}", request);
+        println!("Got a request: {:?}", request.get_ref());
 
         let input = CreateUserInputData {
             user_name: request.get_ref().name.to_string(),
@@ -87,10 +83,13 @@ impl UserService for Service {
     }
 }
 
-impl Service {
-    pub async fn serve(self, addr: SocketAddr) -> Result<(), Box<dyn std::error::Error>> {
+impl App {
+    pub async fn run(address: &str) -> Result<(), Box<dyn std::error::Error>> {
+        let addr = address.parse()?;
+        let app = App::default();
+
         Server::builder()
-            .add_service(UserServiceServer::new(self))
+            .add_service(UserServiceServer::new(app))
             .serve(addr)
             .await?;
 

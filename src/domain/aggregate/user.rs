@@ -1,6 +1,7 @@
 use derive_builder::Builder;
 use getset::{Getters, Setters};
 
+use crate::domain::aggregate::AggregateRoot;
 use crate::domain::vo::{Id, Name};
 
 #[derive(Default, Clone, Debug, Getters, Setters, Builder)]
@@ -19,6 +20,8 @@ impl PartialEq for User {
         self.id == other.id
     }
 }
+
+impl AggregateRoot for User {}
 
 #[cfg(test)]
 mod tests {

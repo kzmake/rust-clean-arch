@@ -1,5 +1,5 @@
 pub mod id;
-pub mod user;
+pub mod repository;
 
 pub use self::id::{HaveIdRepository, IdRepository};
-pub use self::user::{HaveUserRepository, UserRepository};
+pub use self::repository::{HaveRepository, Repository};

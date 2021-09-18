@@ -3,7 +3,7 @@ use getset::Getters;
 use std::fmt;
 use std::marker::PhantomData;
 
-use common::error::DomainError;
+use crate::domain::error::DomainError;
 
 #[derive(Default, Clone, Debug, PartialEq, Eq, Getters)]
 pub struct Name<T> {
@@ -36,7 +36,7 @@ impl<T> fmt::Display for Name<T> {
 mod tests {
     use super::*;
 
-    use common::error::DomainError;
+    use crate::domain::error::DomainError;
 
     #[derive(Debug, PartialEq)]
     struct User {}

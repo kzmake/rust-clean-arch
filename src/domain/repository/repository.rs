@@ -1,15 +1,15 @@
 use anyhow::{Error, Result};
 
-use crate::domain::aggregate::User;
+use crate::domain::aggregate::AggregateRoot;
 
-pub trait UserRepository {
-    fn save(&self, user: User) -> Result<(), Error>;
+pub trait Repository<T: AggregateRoot> {
+    fn save(&self, resource: T) -> Result<(), Error>;
 }
 
-pub trait HaveUserRepository {
-    type UserRepository: UserRepository;
+pub trait HaveRepository<T: AggregateRoot> {
+    type Repository: Repository<T>;
 
-    fn provide_user_repository(&self) -> &Self::UserRepository;
+    fn provide_repository(&self) -> &Self::Repository;
 }
 
 // #[cfg(test)]

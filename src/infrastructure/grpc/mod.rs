@@ -1,3 +1,3 @@
-pub mod service;
+pub mod app;
 
-pub use self::service::Service;
+pub use self::app::App;

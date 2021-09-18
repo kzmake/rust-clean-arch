@@ -1,32 +1,34 @@
 use anyhow::{Error, Result};
 use derive_new::new;
 
-use crate::usecase::port::{InputData, OutputData};
+use crate::usecase::port::{Input, Output, Usecase};
 
-pub trait CreateUserPort {
-    fn handle(&self, input: CreateUserInputData) -> Result<CreateUserOutputData, Error>;
+pub struct CreateUser {}
+
+pub trait Port<T: Usecase> {
+    fn handle(&self, input: InputData<T>) -> Result<OutputData<T>, Error>;
 }
 
-pub trait HaveCreateUserPort {
-    type CreateUserPort: CreateUserPort;
+pub trait HavePort<T: Usecase> {
+    type Port: Port<T>;
 
-    fn provide_create_user_port(&self) -> &Self::CreateUserPort;
+    fn provide_port(&self) -> &Self::Port;
 }
 
 #[derive(new, Clone, Debug, PartialEq, Eq)]
-pub struct CreateUserInputData {
+pub struct InputData<CreateUser> {
     pub user_name: String,
 }
 
-impl InputData for CreateUserInputData {}
+impl<T: Usecase> Input for InputData<T> {}
 
 #[derive(new, Clone, Debug, PartialEq, Eq)]
-pub struct CreateUserOutputData {
+pub struct OutputData<CreateUser> {
     pub user_id: String,
     pub user_name: String,
 }
 
-impl OutputData for CreateUserOutputData {}
+impl<T: Usecase> Output for OutputData<T> {}
 
 #[cfg(test)]
 mod tests {

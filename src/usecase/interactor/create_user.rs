@@ -6,9 +6,9 @@ use crate::domain::vo::{Id, Name};
 
 use crate::usecase::port::{CreateUserInputData, CreateUserOutputData, CreateUserPort};
 
-pub trait CreateUserInterractor: HaveIdRepository {}
+pub trait Interractor<CreateUser>: HaveIdRepository {}
 
-impl<T: CreateUserInterractor> CreateUserPort for T {
+impl<T: Interractor> Port<CreateUser> for T {
     fn handle(&self, input: CreateUserInputData) -> Result<CreateUserOutputData, Error> {
         let new_id: String = self.provide_id_repository().generate()?;
 

@@ -1,7 +1,8 @@
 pub mod port;
 
-pub use self::port::InputData;
-pub use self::port::OutputData;
+pub use self::port::Usecase;
+pub use self::port::Input;
+pub use self::port::Output;
 pub use self::port::Port;
 
 pub mod create_user;

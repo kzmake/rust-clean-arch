@@ -5,15 +5,15 @@ pub mod infrastructure;
 pub mod interface;
 pub mod usecase;
 
-use crate::infrastructure::grpc::Service;
+use crate::infrastructure::grpc::App;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "[::1]:50051".parse()?;
+    let address = "[::1]:50051";
 
-    println!("service listening on {}", addr);
+    println!("service listening on {}", address);
 
-    Service::default().serve(addr).await?;
+    App::run(address).await?;
 
     Ok(())
 }
