@@ -1,3 +1,3 @@
-pub mod user;
+pub mod memory;
 
-pub use self::user::MemoryUserRepository;
+pub use self::memory::MemoryRepository;

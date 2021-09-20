@@ -1,7 +1,10 @@
+use crate::domain::vo::{Id, Name};
 use derive_builder::Builder;
 use getset::{Getters, Setters};
 
-use crate::domain::vo::{Id, Name};
+pub trait Entity<T> {
+    fn id(&self) -> Id<T>;
+}
 
 #[derive(Default, Clone, Debug, Getters, Setters, Builder)]
 #[builder(setter(into))]
@@ -20,10 +23,15 @@ impl PartialEq for User {
     }
 }
 
+impl Entity<User> for User {
+    fn id(&self) -> Id<User> {
+        self.id.clone()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::domain::vo::{Id, Name};
 
     #[test]
     fn test_user() {

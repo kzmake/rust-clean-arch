@@ -1,11 +1,19 @@
+use crate::domain::repository::IdRepository;
+use crate::domain::repository::Repository;
 use anyhow::{Error, Result};
 use ulid::Ulid;
 
-use crate::domain::repository::IdRepository;
+pub struct UlidRepository {}
 
-pub trait UlidRepository {}
+impl UlidRepository {
+    pub fn new() -> Self {
+        Self {}
+    }
+}
 
-impl<T: UlidRepository> IdRepository for T {
+impl Repository for UlidRepository {}
+
+impl IdRepository for UlidRepository {
     fn generate(&self) -> Result<String, Error> {
         Ok(Ulid::new().to_string())
     }
